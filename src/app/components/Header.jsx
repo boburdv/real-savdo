@@ -33,7 +33,7 @@ export default function Header({ onMenuClick }) {
           </button>
         </div>
       ) : (
-        <Button onClick={() => route.push("/auth")} variant="outline">
+        <Button onClick={() => router.push("/auth")} variant="outline">
           Kirish
         </Button>
       )}
