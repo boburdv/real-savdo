@@ -1,9 +1,10 @@
-import Sidebar from "../components/Sidebar";
+import Categories from "@/components/Categories";
+import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
   return (
-    <div>
-      <Sidebar />
-    </div>
+    <Sidebar>
+      <Categories />
+    </Sidebar>
   );
 }

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import Header from "./Header";
 
-export default function Layout({ children }) {
+export default function Sidebar({ children }) {
   const [open, setOpen] = useState(false);
 
   const menu = [
@@ -28,8 +28,8 @@ export default function Layout({ children }) {
   return (
     <div className="flex min-h-screen bg-white text-black">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex fixed top-0 left-0 h-full w-64 bg-white border-r flex-col p-6 z-50">
-        <h2 className="text-2xl font-bold mb-6">real savdo</h2>
+      <aside className="hidden md:flex fixed top-0 left-0 h-full w-64 bg-white border-r flex-col p-3 z-50">
+        <h2 className="text-2xl font-bold mb-6 ml-3">real savdo</h2>
         <MenuList />
       </aside>
 
