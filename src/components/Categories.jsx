@@ -9,7 +9,7 @@ export default function Categories() {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {items.map((item) => (
         <Link key={item.name} href={item.href} className="border p-4 rounded shadow hover:bg-gray-100 cursor-pointer">
           {item.name}

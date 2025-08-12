@@ -1,9 +1,9 @@
-import Home from "./home/page";
+import Categories from "@/components/Categories";
 
 export default function page() {
   return (
     <>
-      <Home />
+      <Categories />
     </>
   );
 }

@@ -1,26 +1,28 @@
 "use client";
+
 import { useState } from "react";
 import { X } from "lucide-react";
 import Header from "./Header";
+import Link from "next/link";
 
 export default function Sidebar({ children }) {
   const [open, setOpen] = useState(false);
 
   const menu = [
+    { name: "Bosh sahifa", href: "/" },
     { name: "Hisobimni to'ldirish", href: "/" },
     { name: "E'lonlarim", href: "/my-ads" },
     { name: "Xabarlar", href: "/chat" },
     { name: "Admin aloqa", href: "/admin" },
-    { name: "Sayt qoidalari", href: "/qoidalar" },
     { name: "Haqida", href: "/haqida" },
   ];
 
   const MenuList = ({ onClick }) => (
     <nav className="flex flex-col gap-4">
       {menu.map((item) => (
-        <a key={item.name} href={item.href} className="hover:bg-gray-200 rounded px-3 py-2" onClick={onClick}>
+        <Link key={item.name} href={item.href} className="hover:bg-gray-200 rounded px-3 py-2 block" onClick={onClick}>
           {item.name}
-        </a>
+        </Link>
       ))}
     </nav>
   );

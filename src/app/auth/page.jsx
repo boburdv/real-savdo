@@ -14,17 +14,19 @@ export default function AuthPage() {
   const [pass, setPass] = useState("");
   const [mode, setMode] = useState("login");
 
-  async function handleLogin(e) {
+  // Login va register
+  async function handleSubmit(e) {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-    if (error) return alert(error.message);
-    router.push("/");
-  }
 
-  async function handleRegister(e) {
-    e.preventDefault();
-    const { error } = await supabase.auth.signUp({ email, password: pass });
-    if (error) return alert(error.message);
+    let res;
+    if (mode == "login") {
+      res = await supabase.auth.signInWithPassword({ email, password: pass });
+    } else {
+      res = await supabase.auth.signUp({ email, password: pass });
+    }
+
+    if (res.error) return alert(res.error.message);
+
     router.push("/");
   }
 
@@ -43,7 +45,7 @@ export default function AuthPage() {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form onSubmit={mode === "login" ? handleLogin : handleRegister}>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Elektron pochta</Label>
