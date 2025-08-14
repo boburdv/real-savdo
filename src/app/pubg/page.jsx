@@ -1,5 +1,5 @@
-import React from "react";
+import CategorySection from "@/components/CategorySection";
 
-export default function page() {
-  return <div>pubg</div>;
+export default function Pubg() {
+  return <CategorySection category="pubg" />;
 }

@@ -1,5 +1,5 @@
-import React from "react";
+import CategorySection from "@/components/CategorySection";
 
-export default function page() {
-  return <div>youtube</div>;
+export default function Youtube() {
+  return <CategorySection category="youtube" />;
 }

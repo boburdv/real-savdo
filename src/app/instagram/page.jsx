@@ -1,5 +1,5 @@
-import React from "react";
+import CategorySection from "@/components/CategorySection";
 
-export default function page() {
-  return <div>instagram</div>;
+export default function Instagram() {
+  return <CategorySection category="instagram" />;
 }

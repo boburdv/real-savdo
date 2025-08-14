@@ -1,5 +1,5 @@
-import React from "react";
+import CategorySection from "@/components/CategorySection";
 
-export default function page() {
-  return <div>tiktok</div>;
+export default function TikTok() {
+  return <CategorySection category="tiktok" />;
 }

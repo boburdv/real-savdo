@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, PlusCircle, MessageCircle, Info, DollarSign, House, ShieldUser, Wallet } from "lucide-react";
 import Header from "./Header";
 import Link from "next/link";
 
@@ -9,36 +9,35 @@ export default function Sidebar({ children }) {
   const [open, setOpen] = useState(false);
 
   const menu = [
-    { name: "Bosh sahifa", href: "/" },
-    { name: "Hisobimni to'ldirish", href: "/" },
-    { name: "E'lonlarim", href: "/my-ads" },
-    { name: "Xabarlar", href: "/chat" },
-    { name: "Admin aloqa", href: "/admin" },
-    { name: "Haqida", href: "/haqida" },
+    { name: "Bosh sahifa", href: "/", icon: House },
+    { name: "Hisobimni to'ldirish", href: "/", icon: Wallet },
+    { name: "E'lon joylash", href: "/add", icon: PlusCircle },
+    { name: "Xabarlar", href: "/chat", icon: MessageCircle },
+    { name: "Admin aloqa", href: "/admin", icon: ShieldUser },
+    { name: "Haqida", href: "/haqida", icon: Info },
   ];
 
   const MenuList = ({ onClick }) => (
-    <nav className="flex flex-col gap-4">
-      {menu.map((item) => (
-        <Link key={item.name} href={item.href} className="hover:bg-gray-200 rounded px-3 py-2 block" onClick={onClick}>
-          {item.name}
+    <nav className="flex flex-col gap-3">
+      {menu.map(({ name, href, icon: Icon }) => (
+        <Link key={name} href={href} onClick={onClick} className="flex items-center gap-3 rounded-md px-3 py-3 hover:bg-gray-100 transition-colors">
+          <Icon size={20} />
+          {name}
         </Link>
       ))}
     </nav>
   );
 
   return (
-    <div className="flex min-h-screen bg-white text-black">
-      {/* Desktop sidebar */}
-      <aside className="hidden md:flex fixed top-0 left-0 h-full w-64 bg-white border-r flex-col p-3 z-50">
-        <h2 className="text-2xl font-bold mb-6 ml-3">real savdo</h2>
+    <div className="flex min-h-screen">
+      <aside className="hidden md:flex fixed h-full w-64 border-r flex-col p-3">
+        <h2 className="text-2xl mb-6 ml-3">real savdo</h2>
         <MenuList />
       </aside>
 
-      {/* Mobile sidebar */}
       {open && (
         <div className="fixed inset-0 z-50 flex md:hidden">
-          <aside className="w-64 bg-white border-r p-6">
+          <aside className="w-64 border-r p-6 bg-white">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">real savdo</h2>
               <button onClick={() => setOpen(false)}>
@@ -51,7 +50,6 @@ export default function Sidebar({ children }) {
         </div>
       )}
 
-      {/* Content */}
       <div className="flex-1 md:ml-64 flex flex-col">
         <Header onMenuClick={() => setOpen(true)} />
         <main className="p-6">{children}</main>

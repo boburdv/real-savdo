@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { Menu, MessageCircle, User } from "lucide-react";
+import { Menu, MessageCircle } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 
 export default function Header({ onMenuClick }) {
@@ -12,19 +12,11 @@ export default function Header({ onMenuClick }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchUser() {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    }
-    fetchUser();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: authListener } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user || null);
     });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => authListener.subscription.unsubscribe();
   }, []);
 
   return (
@@ -32,12 +24,11 @@ export default function Header({ onMenuClick }) {
       <button onClick={onMenuClick} className="md:hidden" aria-label="Open menu">
         <Menu size={24} />
       </button>
-
       {user ? (
-        <div className="flex items-center gap-4">
-          <button aria-label="Chat">
-            <MessageCircle size={24} />
-          </button>
+        <div className="flex">
+          <Button variant="ghost" aria-label="Chat">
+            <MessageCircle />
+          </Button>
           <UserDropdown user={user} />
         </div>
       ) : (

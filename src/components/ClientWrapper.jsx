@@ -7,5 +7,5 @@ export default function ClientWrapper({ children }) {
   const pathname = usePathname();
   const hideLayout = pathname.startsWith("/auth");
 
-  return !hideLayout ? <Sidebar>{children}</Sidebar> : <>{children}</>;
+  return hideLayout ? <>{children}</> : <Sidebar>{children}</Sidebar>;
 }

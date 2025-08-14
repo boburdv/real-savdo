@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function Categories() {
   const items = [
@@ -10,9 +11,11 @@ export default function Categories() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {items.map((item) => (
-        <Link key={item.name} href={item.href} className="border p-4 rounded shadow hover:bg-gray-100 cursor-pointer">
-          {item.name}
+      {items.map(({ name, href }) => (
+        <Link key={name} href={href}>
+          <Card className="cursor-pointer hover:bg-gray-100 transition-colors">
+            <CardContent className="font-semibold">{name}</CardContent>
+          </Card>
         </Link>
       ))}
     </div>

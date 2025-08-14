@@ -11,24 +11,25 @@ import { Label } from "@/components/ui/label";
 export default function AuthPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
   const [mode, setMode] = useState("login");
 
-  // Login va register
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let res;
-    if (mode == "login") {
-      res = await supabase.auth.signInWithPassword({ email, password: pass });
+    let result;
+    if (mode === "login") {
+      result = await supabase.auth.signInWithPassword({ email, password });
     } else {
-      res = await supabase.auth.signUp({ email, password: pass });
+      result = await supabase.auth.signUp({ email, password });
     }
 
-    if (res.error) return alert(res.error.message);
-
-    router.push("/");
-  }
+    if (result.error) {
+      alert(result.error.message);
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -53,7 +54,7 @@ export default function AuthPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Parol</Label>
-                <Input id="password" type="password" value={pass} onChange={(e) => setPass(e.target.value)} required />
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
             </div>
             <CardFooter className="flex flex-col gap-2 mt-6 w-full p-0">

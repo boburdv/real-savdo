@@ -1,21 +1,19 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 
 export default function UserDropdown({ user }) {
-  async function handleLogout() {
+  const handleLogout = async () => {
     await supabase.auth.signOut();
-  }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button variant="ghost">
           <User size={20} />
         </Button>
       </DropdownMenuTrigger>
