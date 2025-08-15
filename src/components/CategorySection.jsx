@@ -15,8 +15,9 @@ export default function CategorySection({ category }) {
   useEffect(() => {
     async function fetchListings() {
       const { data, error } = await supabase.from("listings").select("*").eq("category", category).order("created_at", { ascending: false });
+
       if (error) alert(error.message);
-      else setListings(data);
+      else setListings(data || []);
     }
     fetchListings();
   }, [category]);

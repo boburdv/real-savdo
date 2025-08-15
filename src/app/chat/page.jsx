@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 export default function ChatPage({ user }) {
   const searchParams = useSearchParams();
-  const adId = searchParams.get("adId"); // query string dan olamiz
+  const adId = searchParams.get("adId");
 
   const [ad, setAd] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -15,24 +15,27 @@ export default function ChatPage({ user }) {
   // E'lon ma'lumotini olish
   useEffect(() => {
     if (!adId) return;
+
     async function fetchAd() {
       const { data, error } = await supabase.from("listings").select("*").eq("id", adId).single();
-      if (!error) setAd(data);
+      if (!error && data) setAd(data);
     }
     fetchAd();
   }, [adId]);
 
-  // Xabarlarni olish
+  // Xabarlarni olish va real-time subscription
   useEffect(() => {
     if (!ad) return;
+
     async function fetchMessages() {
       const { data, error } = await supabase.from("messages").select("*").eq("ad_id", ad.id).order("created_at", { ascending: true });
-      if (!error) setMessages(data);
+
+      setMessages(data || []);
     }
     fetchMessages();
 
     const subscription = supabase
-      .channel("messages")
+      .channel(`messages-ad-${ad.id}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "messages", filter: `ad_id=eq.${ad.id}` }, (payload) =>
         setMessages((prev) => [...prev, payload.new])
       )
@@ -42,7 +45,8 @@ export default function ChatPage({ user }) {
   }, [ad]);
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !ad) return;
+    if (!newMessage.trim() || !ad || !user?.id) return;
+
     await supabase.from("messages").insert([
       {
         ad_id: ad.id,
@@ -69,11 +73,11 @@ export default function ChatPage({ user }) {
       {/* O'ng: chat */}
       <div className="flex-1 flex flex-col p-2">
         <div className="flex-1 overflow-y-auto border p-2 flex flex-col gap-1">
-          {messages.map((msg) => (
+          {messages?.map((msg) => (
             <div key={msg.id} className={`p-2 rounded max-w-xs ${msg.user_id === user.id ? "bg-blue-200 self-end" : "bg-gray-200 self-start"}`}>
               {msg.content}
             </div>
-          ))}
+          )) || null}
         </div>
 
         <div className="flex mt-2">
