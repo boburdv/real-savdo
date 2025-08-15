@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 export default function CategorySection({ category }) {
   const [listings, setListings] = useState([]);
@@ -15,7 +16,7 @@ export default function CategorySection({ category }) {
   useEffect(() => {
     async function fetchListings() {
       const { data, error } = await supabase.from("listings").select("*").eq("category", category).order("created_at", { ascending: false });
-      if (!error) setListings(data);
+      if (!error) setListings(data || []);
     }
     fetchListings();
   }, [category]);
@@ -31,17 +32,18 @@ export default function CategorySection({ category }) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     if (!user) return alert("Avval tizimga kiring!");
 
     const user1 = user.id;
     const user2 = selectedAd.user_id;
 
-    // Chatga birinchi xabar yuborish (optional, bo‘sh xabar ham bo‘lishi mumkin)
     await supabase.from("rlmessages").insert([
       {
         sender_id: user1,
         receiver_id: user2,
-        content: `Salom, ${selectedAd.title} e'loniga qiziqaman!`,
+        listing_id: selectedAd.id,
+        content: `Salom! ${selectedAd.title} e'loniga qiziqaman.`,
       },
     ]);
 
@@ -72,8 +74,8 @@ export default function CategorySection({ category }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{selectedAd?.title}</DialogTitle>
+            <DialogDescription>{selectedAd?.description}</DialogDescription>
           </DialogHeader>
-          <p>{selectedAd?.description}</p>
           <p className="font-bold">Narx: {selectedAd?.price} so’m</p>
           <p>Kategoriya: {selectedAd?.category}</p>
           {selectedAd?.phone && <p>Telefon: {selectedAd.phone}</p>}

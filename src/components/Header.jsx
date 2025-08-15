@@ -30,7 +30,7 @@ export default function Header({ onMenuClick }) {
       </button>
       {user ? (
         <div className="flex">
-          <Button variant="ghost" aria-label="Chat">
+          <Button variant="ghost" aria-label="Chat" onClick={() => router.push("/chat")}>
             <MessageCircle />
           </Button>
           <UserDropdown user={user} />

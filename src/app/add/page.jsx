@@ -48,7 +48,12 @@ export default function Add() {
     if (!user) return alert("Avval tizimga kiring.");
 
     setLoadingSubmit(true);
-    const payload = { ...form, price: +form.price, image_url: "https://via.placeholder.com/150.jpg", user_id: user.id };
+    const payload = {
+      ...form,
+      price: +form.price,
+      image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s",
+      user_id: user.id,
+    };
 
     const { error } = editAd
       ? await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id)
