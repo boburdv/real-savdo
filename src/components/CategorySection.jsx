@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 
-export default function CategorySection({ category, openChat }) {
+export default function CategorySection({ category }) {
   const [listings, setListings] = useState([]);
   const [selectedAd, setSelectedAd] = useState(null);
   const router = useRouter();
@@ -58,8 +58,10 @@ export default function CategorySection({ category, openChat }) {
               <DialogFooter>
                 <Button
                   onClick={() => {
-                    router.push(`/chat?adId=${selectedAd.id}`);
-                    setSelectedAd(null);
+                    if (selectedAd?.id) {
+                      router.push(`/chat?adId=${selectedAd.id}`);
+                      setSelectedAd(null);
+                    }
                   }}
                 >
                   Olmoqchiman
