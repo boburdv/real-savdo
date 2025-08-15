@@ -93,6 +93,8 @@ export default function Add() {
           </Button>
         </form>
       </section>
+
+      <MyEditAd ads={ads} fillForm={fillForm} />
     </div>
   );
 }
