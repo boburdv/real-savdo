@@ -13,7 +13,7 @@ export default function Categories() {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {items.map(({ name, href }) => (
         <Link key={name} href={href}>
-          <Card className="cursor-pointer hover:bg-gray-100 transition-colors">
+          <Card className="cursor-pointer hover:bg-gray-100 rounded-sm transition-colors">
             <CardContent className="font-semibold">{name}</CardContent>
           </Card>
         </Link>

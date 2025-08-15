@@ -20,7 +20,7 @@ export default function Sidebar({ children }) {
   const MenuList = ({ onClick }) => (
     <nav className="flex flex-col gap-3">
       {menu.map(({ name, href, icon: Icon }) => (
-        <Link key={name} href={href} onClick={onClick} className="flex items-center gap-3 rounded-md px-3 py-3 hover:bg-gray-100 transition-colors">
+        <Link key={name} href={href} onClick={onClick} className="flex items-center gap-4 rounded-md px-3 py-3 hover:bg-gray-100 transition-colors">
           <Icon size={20} />
           {name}
         </Link>
