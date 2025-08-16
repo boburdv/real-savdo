@@ -41,7 +41,6 @@ export default function Add() {
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // 🔹 E’lon qo‘shish / yangilash
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return alert("Avval tizimga kiring.");

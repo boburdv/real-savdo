@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import { Menu, MessageCircle } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 
-export default function Header({ onMenuClick }) {
+export default function Header() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [mounted, setMounted] = useState(false); // client-only flag
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // component mounted, SSRdan keyin
+    setMounted(true);
     supabase.auth.getUser().then(({ data }) => setUser(data.user));
     const { data: authListener } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user || null);
@@ -21,25 +21,28 @@ export default function Header({ onMenuClick }) {
     return () => authListener.subscription.unsubscribe();
   }, []);
 
-  if (!mounted) return null; // SSRda hech narsa render qilinmaydi
+  if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 w-full py-3 px-4 bg-white border-b flex justify-between md:justify-end items-center">
-      <button onClick={onMenuClick} className="md:hidden" aria-label="Open menu">
-        <Menu size={24} />
-      </button>
-      {user ? (
-        <div className="flex">
-          <Button variant="ghost" aria-label="Chat" onClick={() => router.push("/chat")}>
-            <MessageCircle />
-          </Button>
-          <UserDropdown user={user} />
+    <header className="sticky top-0 z-40 backdrop-blur-sm bg-white/60 mx-5">
+      <div className="mx-auto max-w-4xl w-full flex justify-between ">
+        {/* Chap taraf: logo */}
+        <div className="flex items-center">
+          <img src="/logo.png" alt="Logo" className="h-14 w-auto" />
         </div>
-      ) : (
-        <Button onClick={() => router.push("/auth")} variant="outline">
-          Kirish
-        </Button>
-      )}
+
+        {/* O‘ng taraf */}
+        {user ? (
+          <div className="flex items-center gap-4">
+            <MessageCircle onClick={() => router.push("/chat")} size={22} className="text-gray-500 hover:text-black cursor-pointer" />
+            <UserDropdown user={user} />
+          </div>
+        ) : (
+          <Button onClick={() => router.push("/auth")} className="h-8">
+            Kirish
+          </Button>
+        )}
+      </div>
     </header>
   );
 }

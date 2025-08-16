@@ -13,9 +13,7 @@ export default function UserDropdown({ user }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost">
-          <User size={20} />
-        </Button>
+        <User size={20} className="text-gray-500 hover:text-black" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Hisobim</DropdownMenuLabel>
