@@ -16,14 +16,13 @@ export default function Add() {
   const [form, setForm] = useState({ title: "", description: "", price: "", category: "", phone: "" });
   const [editAd, setEditAd] = useState(null);
 
-  // 🔹 user va ads olish
   useEffect(() => {
     (async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
-      if (user) await fetchAds(user.id);
+      if (user) fetchAds(user.id);
       setLoadingAds(false);
     })();
   }, []);
@@ -46,14 +45,12 @@ export default function Add() {
     if (!user) return alert("Avval tizimga kiring.");
 
     setLoadingSubmit(true);
-
     const payload = {
       ...form,
       price: +form.price,
       image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s",
       user_id: user.id,
     };
-
     let error;
     if (editAd) {
       ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
@@ -61,15 +58,13 @@ export default function Add() {
       ({ error } = await supabase.from("listings").insert([payload]));
     }
 
-    if (error) {
-      alert("Xato: " + error.message);
-    } else {
+    if (error) alert("Xato: " + error.message);
+    else {
       alert(editAd ? "E'lon yangilandi!" : "E'lon joylandi!");
       setForm({ title: "", description: "", price: "", category: "", phone: "" });
       setEditAd(null);
-      await fetchAds();
+      fetchAds();
     }
-
     setLoadingSubmit(false);
   };
 
@@ -102,7 +97,6 @@ export default function Add() {
           </Button>
         </form>
       </section>
-
       <MyEditAd ads={ads} fillForm={fillForm} />
     </div>
   );

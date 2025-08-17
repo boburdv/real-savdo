@@ -2,13 +2,10 @@
 
 import { supabase } from "@/lib/supabase";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 
 export default function UserDropdown({ user }) {
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
+  const handleLogout = async () => await supabase.auth.signOut();
 
   return (
     <DropdownMenu>

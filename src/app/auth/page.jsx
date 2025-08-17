@@ -16,19 +16,10 @@ export default function AuthPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    let result;
-    if (mode === "login") {
-      result = await supabase.auth.signInWithPassword({ email, password });
-    } else {
-      result = await supabase.auth.signUp({ email, password });
-    }
-
-    if (result.error) {
-      alert(result.error.message);
-    } else {
-      router.push("/");
-    }
+    const fn = mode === "login" ? supabase.auth.signInWithPassword : supabase.auth.signUp;
+    const { error } = await fn({ email, password });
+    if (error) alert(error.message);
+    else router.push("/");
   };
 
   return (
@@ -46,18 +37,16 @@ export default function AuthPage() {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Elektron pochta</Label>
-                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Parol</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-              </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Elektron pochta</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
-            <CardFooter className="flex flex-col gap-2 mt-6 w-full p-0">
+            <div className="grid gap-2">
+              <Label htmlFor="password">Parol</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <CardFooter className="mt-6 p-0">
               <Button type="submit" className="w-full">
                 {mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}
               </Button>

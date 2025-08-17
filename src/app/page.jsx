@@ -1,6 +1,6 @@
 import Categories from "@/components/Categories";
 
-export default function page() {
+export default function Page() {
   return (
     <div className="max-w-4xl mx-auto px-4">
       <div className="text-center mt-8 mb-12 max-w-2xl mx-auto">

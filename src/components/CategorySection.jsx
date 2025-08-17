@@ -29,9 +29,7 @@ export default function CategorySection({ category }) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) return alert("Avval tizimga kiring!");
-
-    const receiver_id = selected.user_id;
-    router.push(`/chat?receiver=${receiver_id}`);
+    router.push(`/chat?receiver=${selected.user_id}`);
   };
 
   return (

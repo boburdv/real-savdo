@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image"; // next/image ishlatish tavsiya qilinadi
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Categories() {
@@ -12,14 +12,14 @@ export default function Categories() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {items.map(({ name, href, img, desc }) => (
-        <Link key={name} href={href}>
+      {items.map((item) => (
+        <Link key={item.name} href={item.href}>
           <Card className="cursor-pointer rounded-xl hover:bg-gray-100 py-0 transition-colors">
             <CardContent className="flex items-center gap-5 p-4">
-              <Image src={img} alt={name} width={100} height={100} />
+              <Image src={item.img} alt={item.name} width={100} height={100} />
               <div>
-                <h3 className="font-semibold text-2xl">{name}</h3>
-                <p className="text-sm text-gray-500">{desc}</p>
+                <h3 className="font-semibold text-2xl">{item.name}</h3>
+                <p className="text-sm text-gray-500">{item.desc}</p>
               </div>
             </CardContent>
           </Card>
