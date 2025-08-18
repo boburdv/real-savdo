@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import MyEditAd from "@/components/EditAd";
+import { validateForm } from "@/components/Validation";
+import toast from "react-hot-toast";
 
 export default function Add() {
   const [user, setUser] = useState(null);
@@ -36,21 +38,31 @@ export default function Add() {
   const fillForm = (ad) => {
     setForm({ title: ad.title, description: ad.description, price: ad.price, category: ad.category, phone: ad.phone });
     setEditAd(ad);
+    toast.success("E'lonni tahrirlash mumkin");
   };
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    if (name === "phone") {
+      value = value.replace(/\D/g, "");
+      if (!value.startsWith("998")) value = "998" + value;
+      if (value.length === 12) {
+        const match = value.match(/^(\d{3})(\d{2})(\d{3})(\d{2})$/);
+        if (match) value = `+${match[1]} ${match[2]} ${match[3]}-${match[4]}`;
+      } else {
+        value = "+" + value;
+      }
+    }
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) return alert("Avval tizimga kiring.");
+    if (!user) return toast.error("Iltimos avval tizimga kiring");
+    if (!validateForm(form)) return;
 
     setLoadingSubmit(true);
-    const payload = {
-      ...form,
-      price: +form.price,
-      image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s",
-      user_id: user.id,
-    };
+    const payload = { ...form, user_id: user.id, image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s" };
     let error;
     if (editAd) {
       ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
@@ -58,9 +70,9 @@ export default function Add() {
       ({ error } = await supabase.from("listings").insert([payload]));
     }
 
-    if (error) alert("Xato: " + error.message);
+    if (error) toast.error("Xato: " + error.message);
     else {
-      alert(editAd ? "E'lon yangilandi!" : "E'lon joylandi!");
+      toast.success(editAd ? "E'lon muvaffaqiyatli yangilandi!" : "E'lon muvaffaqiyatli joylandi!");
       setForm({ title: "", description: "", price: "", category: "", phone: "" });
       setEditAd(null);
       fetchAds();
@@ -71,13 +83,13 @@ export default function Add() {
   if (loadingAds) return <p>Yuklanmoqda...</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-4 flex flex-col gap-10">
-      <section>
+    <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-10">
+      <section className="sm:w-1/2">
         <h1 className="text-2xl mb-4">{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input name="title" value={form.title} onChange={handleChange} placeholder="Sarlavha" required />
-          <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Tavsif" rows={4} required />
-          <Input name="price" type="number" value={form.price} onChange={handleChange} placeholder="Narx" min={1} required />
+          <Input name="title" value={form.title} onChange={handleChange} placeholder="Sarlavha" />
+          <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Tavsif" rows={4} />
+          <Input name="price" value={form.price} onChange={handleChange} placeholder="Narx" />
           <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
             <SelectTrigger>
               <SelectValue placeholder="Kategoriya tanlang" />
@@ -91,13 +103,15 @@ export default function Add() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Input name="phone" value={form.phone} onChange={handleChange} placeholder="Telefon raqam" required />
+          <Input name="phone" value={form.phone} onChange={handleChange} placeholder="Telefon raqam" />
           <Button type="submit" disabled={loadingSubmit}>
             {loadingSubmit ? "Yuklanmoqda..." : editAd ? "O'zgartirishni saqlash" : "E'lonni joylash"}
           </Button>
         </form>
       </section>
-      <MyEditAd ads={ads} fillForm={fillForm} />
+      <section className="sm:w-1/2">
+        <MyEditAd ads={ads} fillForm={fillForm} />
+      </section>
     </div>
   );
 }

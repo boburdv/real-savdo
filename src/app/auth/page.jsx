@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { validateAuth } from "@/components/Validation";
+import toast from "react-hot-toast";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -16,10 +18,18 @@ export default function AuthPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const fn = mode === "login" ? supabase.auth.signInWithPassword : supabase.auth.signUp;
-    const { error } = await fn({ email, password });
-    if (error) alert(error.message);
-    else router.push("/");
+
+    let response;
+    if (mode === "login") {
+      response = await supabase.auth.signInWithPassword({ email, password });
+    } else {
+      response = await supabase.auth.signUp({ email, password });
+    }
+
+    if (!validateAuth({ email, password, response, mode })) return;
+
+    toast.success(mode === "login" ? "Hisobga kirish muvaffaqiyatli!" : "Ro'yxatdan o'tish muvaffaqiyatli!");
+    router.push("/");
   };
 
   return (
@@ -40,11 +50,11 @@ export default function AuthPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Elektron pochta</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Parol</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <CardFooter className="mt-6 p-0">
               <Button type="submit" className="w-full">

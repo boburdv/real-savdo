@@ -3,14 +3,25 @@
 import { supabase } from "@/lib/supabase";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function UserDropdown({ user }) {
-  const handleLogout = async () => await supabase.auth.signOut();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Chiqishda xatolik yuz berdi");
+    } else {
+      toast.success("Hisobdan chiqdingiz");
+    }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <User size={20} className="text-gray-500 hover:text-black" />
+        <User size={20} className="text-gray-500 hover:text-black cursor-pointer" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Hisobim</DropdownMenuLabel>
