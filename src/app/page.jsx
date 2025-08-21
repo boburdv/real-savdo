@@ -3,13 +3,13 @@ import Header from "@/components/Header";
 
 export default function Page() {
   return (
-    <div>
+    <>
       <Header />
-      <div>
+      {/* <div>
         <h1>Ilk onlayn, xavfsiz akkaunt savdo platformasi.</h1>
         <p>real-savdo, real odamlar uchun.</p>
-      </div>
+      </div> */}
       <Categories />
-    </div>
+    </>
   );
 }
