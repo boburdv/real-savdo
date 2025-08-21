@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import UserDropdown from "./UserDropdown";
 import Nav from "./Nav";
+import { ModeToggle } from "./ModeToggle";
 
 export default function Header() {
   const router = useRouter();
@@ -24,20 +25,22 @@ export default function Header() {
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-sm bg-white/60">
-      <div className="mx-auto max-w-7xl w-full flex justify-between items-center py-3">
-        <div className="flex items-center gap-6">
+    <header>
+      <div>
+        <div>
           <Nav />
         </div>
 
         {user ? (
-          <div className="flex items-center gap-4">
+          <div>
+            <ModeToggle />
             <UserDropdown user={user} />
           </div>
         ) : (
-          <Button onClick={() => router.push("/auth")} size="sm">
-            Kirish
-          </Button>
+          <div>
+            <ModeToggle />
+            <Button onClick={() => router.push("/auth")}>Kirish</Button>
+          </div>
         )}
       </div>
     </header>

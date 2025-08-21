@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -33,18 +34,16 @@ export default function CategorySection({ category }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl mb-4">{category} e’lonlari</h1>
-      <div className="flex flex-col gap-4">
+    <div>
+      <h1>{category} e’lonlari</h1>
+      <div>
         {listings.map((ad) => (
-          <div key={ad.id} className="border p-4 rounded">
-            <h2 className="text-xl font-semibold">{ad.title}</h2>
+          <div key={ad.id}>
+            <h2>{ad.title}</h2>
             <p>{ad.description}</p>
-            <p className="font-bold mt-1">{Number(ad.price)} so’m</p>
-            {ad.image_url && <img src={ad.image_url} alt={ad.title} className="max-w-xs mt-2 rounded" />}
-            <Button className="mt-3" onClick={() => openModal(ad)}>
-              Xabar yozish
-            </Button>
+            <p>{Number(ad.price)} so’m</p>
+            {ad.image_url && <img src={ad.image_url} alt={ad.title} />}
+            <Button onClick={() => openModal(ad)}>Xabar yozish</Button>
           </div>
         ))}
       </div>

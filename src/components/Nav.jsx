@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default function Nav() {
   const menu = [
@@ -11,12 +11,14 @@ export default function Nav() {
   ];
 
   return (
-    <nav className="flex items-center gap-1">
-      <h1 className="font-bold text-2xl italic mr-3">RS</h1>
+    <nav>
+      <Button>
+        <img src="./logo.png" alt="Logo realsavdo" width={25} />
+      </Button>
       {menu.map(({ name, href }) => (
-        <Link key={name} href={href} className="text-gray-700 hover:text-black text-sm px-3 py-1 rounded-md transition-colors">
+        <Button key={name} href={href}>
           {name}
-        </Link>
+        </Button>
       ))}
     </nav>
   );

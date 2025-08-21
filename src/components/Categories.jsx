@@ -11,15 +11,15 @@ export default function Categories() {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
       {items.map((item) => (
         <Link key={item.name} href={item.href}>
-          <Card className="cursor-pointer rounded-xl hover:bg-gray-100 py-0 transition-colors">
-            <CardContent className="flex items-center gap-5 p-4">
+          <Card>
+            <CardContent>
               <Image src={item.img} alt={item.name} width={100} height={100} />
               <div>
-                <h3 className="font-semibold text-2xl">{item.name}</h3>
-                <p className="text-sm text-gray-500">{item.desc}</p>
+                <h3>{item.name}</h3>
+                <p>{item.desc}</p>
               </div>
             </CardContent>
           </Card>

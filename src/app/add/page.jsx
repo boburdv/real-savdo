@@ -15,7 +15,13 @@ export default function Add() {
   const [ads, setAds] = useState([]);
   const [loadingAds, setLoadingAds] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [form, setForm] = useState({ title: "", description: "", price: "", category: "", phone: "" });
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    price: "",
+    category: "",
+    phone: "",
+  });
   const [editAd, setEditAd] = useState(null);
 
   useEffect(() => {
@@ -32,20 +38,29 @@ export default function Add() {
   const fetchAds = async (uid = user?.id) => {
     if (!uid) return;
     const { data, error } = await supabase.from("listings").select("*").eq("user_id", uid).order("created_at", { ascending: false });
+
     if (!error) setAds(data || []);
   };
 
   const fillForm = (ad) => {
-    setForm({ title: ad.title, description: ad.description, price: ad.price, category: ad.category, phone: ad.phone });
+    setForm({
+      title: ad.title,
+      description: ad.description,
+      price: ad.price,
+      category: ad.category,
+      phone: ad.phone,
+    });
     setEditAd(ad);
     toast.success("E'lonni tahrirlash mumkin");
   };
 
   const handleChange = (e) => {
     let { name, value } = e.target;
+
     if (name === "phone") {
       value = value.replace(/\D/g, "");
       if (!value.startsWith("998")) value = "998" + value;
+
       if (value.length === 12) {
         const match = value.match(/^(\d{3})(\d{2})(\d{3})(\d{2})$/);
         if (match) value = `+${match[1]} ${match[2]} ${match[3]}-${match[4]}`;
@@ -53,6 +68,7 @@ export default function Add() {
         value = "+" + value;
       }
     }
+
     setForm({ ...form, [name]: value });
   };
 
@@ -62,31 +78,46 @@ export default function Add() {
     if (!validateForm(form)) return;
 
     setLoadingSubmit(true);
-    const payload = { ...form, user_id: user.id, image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s" };
+
+    const payload = {
+      ...form,
+      user_id: user.id,
+      image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s",
+    };
+
     let error;
+
     if (editAd) {
       ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
     } else {
       ({ error } = await supabase.from("listings").insert([payload]));
     }
 
-    if (error) toast.error("Xato: " + error.message);
-    else {
+    if (error) {
+      toast.error("Xato: " + error.message);
+    } else {
       toast.success(editAd ? "E'lon muvaffaqiyatli yangilandi!" : "E'lon muvaffaqiyatli joylandi!");
-      setForm({ title: "", description: "", price: "", category: "", phone: "" });
+      setForm({
+        title: "",
+        description: "",
+        price: "",
+        category: "",
+        phone: "",
+      });
       setEditAd(null);
       fetchAds();
     }
+
     setLoadingSubmit(false);
   };
 
   if (loadingAds) return <p>Yuklanmoqda...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-10">
-      <section className="sm:w-1/2">
-        <h1 className="text-2xl mb-4">{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div>
+      <section>
+        <h1>{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</h1>
+        <form onSubmit={handleSubmit}>
           <Input name="title" value={form.title} onChange={handleChange} placeholder="Sarlavha" />
           <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Tavsif" rows={4} />
           <Input name="price" value={form.price} onChange={handleChange} placeholder="Narx" />
@@ -109,7 +140,8 @@ export default function Add() {
           </Button>
         </form>
       </section>
-      <section className="sm:w-1/2">
+
+      <section>
         <MyEditAd ads={ads} fillForm={fillForm} />
       </section>
     </div>

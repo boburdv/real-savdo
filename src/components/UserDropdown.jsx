@@ -21,10 +21,10 @@ export default function UserDropdown({ user }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <User size={20} className="text-gray-500 hover:text-black cursor-pointer" />
+        <User size={20} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Hisobim</DropdownMenuLabel>
+        <DropdownMenuLabel>Hisob</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>{user.email}</DropdownMenuItem>
         <DropdownMenuItem>Balans: 100.000 so'm</DropdownMenuItem>
