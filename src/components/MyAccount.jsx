@@ -5,6 +5,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { User } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export default function UserDropdown({ user }) {
   const router = useRouter();
@@ -21,10 +22,12 @@ export default function UserDropdown({ user }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <User size={20} />
+        <Button variant="ghost" size="sm">
+          <User size={20} />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Hisob</DropdownMenuLabel>
+        <DropdownMenuLabel>Hisobim</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>{user.email}</DropdownMenuItem>
         <DropdownMenuItem>Balans: 100.000 so'm</DropdownMenuItem>

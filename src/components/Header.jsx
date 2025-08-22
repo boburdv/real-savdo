@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
-import UserDropdown from "./UserDropdown";
-import Nav from "./Nav";
+import MyAccount from "./MyAccount";
+import Navbar from "./Navbar";
 import { ModeToggle } from "./ModeToggle";
+import { Notebook } from "lucide-react";
 
 export default function Header() {
   const router = useRouter();
@@ -25,23 +26,25 @@ export default function Header() {
   if (!mounted) return null;
 
   return (
-    <header>
-      <div>
+    <header className="sticky top-0 z-50 bg-white/70 dark:bg-[#171717a1] p-2.5 border-b border-dashed backdrop-blur-lg">
+      <div className="flex items-center justify-between max-w-6xl mx-auto">
         <div>
-          <Nav />
+          <Navbar />
         </div>
 
-        {user ? (
-          <div>
-            <ModeToggle />
-            <UserDropdown user={user} />
-          </div>
-        ) : (
-          <div>
-            <ModeToggle />
-            <Button onClick={() => router.push("/auth")}>Kirish</Button>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Button variant="destructive" size="sm">
+            Bitimlar
+          </Button>
+          {user ? (
+            <MyAccount user={user} />
+          ) : (
+            <Button size="sm" onClick={() => router.push("/auth")}>
+              Kirish
+            </Button>
+          )}
+          <ModeToggle />
+        </div>
       </div>
     </header>
   );

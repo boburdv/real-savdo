@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function CategorySection({ category }) {
   const [listings, setListings] = useState([]);
@@ -36,17 +37,20 @@ export default function CategorySection({ category }) {
   return (
     <div>
       <h1>{category} e’lonlari</h1>
-      <div>
-        {listings.map((ad) => (
-          <div key={ad.id}>
-            <h2>{ad.title}</h2>
-            <p>{ad.description}</p>
-            <p>{Number(ad.price)} so’m</p>
-            {ad.image_url && <img src={ad.image_url} alt={ad.title} />}
+
+      {listings.map((ad) => (
+        <Card key={ad.id}>
+          <CardHeader>
+            <CardTitle>{ad.title}</CardTitle>
+            <CardDescription>{ad.description}</CardDescription>
+            <CardAction>{Number(ad.price)} so’m</CardAction>
+          </CardHeader>
+          <CardContent>{ad.image_url && <img src={ad.image_url} alt={ad.title} />}</CardContent>
+          <CardFooter>
             <Button onClick={() => openModal(ad)}>Xabar yozish</Button>
-          </div>
-        ))}
-      </div>
+          </CardFooter>
+        </Card>
+      ))}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>

@@ -6,17 +6,19 @@ export default function Nav() {
   const menu = [
     { name: "Balans", href: "/balance" },
     { name: "E'lon joylash", href: "/add" },
+    { name: "Katalog", href: "/" },
     { name: "Yordam", href: "/support" },
     { name: "Haqida", href: "/about" },
   ];
 
   return (
-    <nav>
-      <Button>
-        <img src="./logo.png" alt="Logo realsavdo" width={25} />
-      </Button>
+    <nav className="flex items-center">
+      {/* <img src="./logo.png" alt="Logo realsavdo" width={30} className="mr-3" /> */}
+      <a className="text-3xl font-semibold mr-2.5" href="/">
+        RS
+      </a>
       {menu.map(({ name, href }) => (
-        <Button key={name} href={href}>
+        <Button variant="link" className="cursor-pointer" key={name} href={href}>
           {name}
         </Button>
       ))}

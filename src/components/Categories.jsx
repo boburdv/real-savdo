@@ -11,20 +11,23 @@ export default function Categories() {
   ];
 
   return (
-    <div>
-      {items.map((item) => (
-        <Link key={item.name} href={item.href}>
-          <Card>
-            <CardContent>
-              <Image src={item.img} alt={item.name} width={100} height={100} />
-              <div>
-                <h3>{item.name}</h3>
-                <p>{item.desc}</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
+    <div className="max-w-6xl mx-auto p-2.5 my-20">
+      <h2 className="text-2xl mb-6 font-semibold">Katalog tanlang</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {items.map((item) => (
+          <Link key={item.name} href={item.href}>
+            <Card>
+              <CardContent>
+                <Image src={item.img} alt={item.name} width={100} height={100} />
+                <div>
+                  <h3>{item.name}</h3>
+                  <p>{item.desc}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

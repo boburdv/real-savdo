@@ -37,9 +37,7 @@ export default function AuthPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>{mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}</CardTitle>
-          <CardDescription>
-            {mode === "login" ? "Hisobingizga kirish uchun ma'lumotlarni to'ldiring." : "Yangi hisob yaratish uchun ma'lumotlarni to'ldiring."}
-          </CardDescription>
+          <CardDescription>{mode === "login" ? "Hisobga kirish uchun ma'lumotlarni to'ldiring" : "Ro'yxatdan o'tish uchun ma'lumotlarni to'ldiring"}</CardDescription>
           <CardAction>
             <Button variant="link" onClick={() => setMode(mode === "login" ? "register" : "login")}>
               {mode === "login" ? "Ro'yxatdan o'tish" : "Hisobga kirish"}
@@ -50,15 +48,18 @@ export default function AuthPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Elektron pochta</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="test@gmail.com" />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Parol</Label>
               <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <CardFooter className="mt-6 p-0">
+            <CardFooter className="flex-col gap-2 p-0">
               <Button type="submit" className="w-full">
                 {mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}
+              </Button>
+              <Button variant="outline" className="w-full">
+                {mode === "login" ? "Google bilan kirish" : "Google bilan ro'yxatdan o'tish"}
               </Button>
             </CardFooter>
           </form>
