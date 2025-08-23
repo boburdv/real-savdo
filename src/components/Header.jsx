@@ -26,8 +26,8 @@ export default function Header() {
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/70 dark:bg-[#171717a1] p-2.5 border-b border-dashed backdrop-blur-lg">
-      <div className="flex items-center justify-between max-w-6xl mx-auto">
+    <header className="sticky top-0 z-50 bg-white/50 dark:bg-[rgba(10,10,10,0.5)] p-2.5 border-b border-dashed backdrop-blur-lg">
+      <div className="flex items-center justify-between max-w-6xl px-2.5 mx-auto">
         <div>
           <Navbar />
         </div>
@@ -43,6 +43,7 @@ export default function Header() {
               Kirish
             </Button>
           )}
+          <span className="border-r h-4 bg-gray-900"></span>
           <ModeToggle />
         </div>
       </div>

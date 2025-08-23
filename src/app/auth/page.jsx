@@ -24,8 +24,16 @@ export default function AuthPage() {
       response = await supabase.auth.signInWithPassword({ email, password });
     } else {
       response = await supabase.auth.signUp({ email, password });
-    }
 
+      if (response.data?.user) {
+        await supabase.from("users").insert([
+          {
+            id: response.data.user.id,
+            email: response.data.user.email,
+          },
+        ]);
+      }
+    }
     if (!validateAuth({ email, password, response, mode })) return;
 
     toast.success(mode === "login" ? "Hisobga kirish muvaffaqiyatli!" : "Ro'yxatdan o'tish muvaffaqiyatli!");
