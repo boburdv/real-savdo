@@ -33,9 +33,11 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="destructive" size="sm">
-            Bitimlar
-          </Button>
+          {user && (
+            <Button variant="destructive" size="sm">
+              Bitimlar
+            </Button>
+          )}
           {user ? (
             <MyAccount user={user} />
           ) : (
