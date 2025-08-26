@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +16,7 @@ export default function Add() {
   const [user, setUser] = useState(null);
   const [ads, setAds] = useState([]);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const titleInputRef = useRef(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -52,16 +53,14 @@ export default function Add() {
       telegram: ad.telegram || "",
     });
     setEditAd(ad);
-    toast.success("E'lonni tahrirlash mumkin");
+    if (titleInputRef.current) titleInputRef.current.focus();
   };
 
   const handleChange = (e) => {
     let { name, value } = e.target;
-
     if (name === "phone") {
       value = value.replace(/\D/g, "");
       if (!value.startsWith("998")) value = "998" + value;
-
       if (value.length === 12) {
         const match = value.match(/^(\d{3})(\d{2})(\d{3})(\d{2})$/);
         if (match) value = `+${match[1]} ${match[2]} ${match[3]}-${match[4]}`;
@@ -69,7 +68,6 @@ export default function Add() {
         value = "+" + value;
       }
     }
-
     setForm({ ...form, [name]: value });
   };
 
@@ -77,17 +75,11 @@ export default function Add() {
     e.preventDefault();
     if (!user) return toast.error("Iltimos, avval tizimga kiring");
     if (!validateForm(form)) return;
-
     setLoadingSubmit(true);
 
-    const payload = {
-      ...form,
-      user_id: user.id,
-      image_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEqQ5KP18ra5tjApi2aC5dXEhGYXUDRetKIA&s",
-    };
+    const payload = { ...form, user_id: user.id };
 
     let error;
-
     if (editAd) {
       ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
     } else {
@@ -115,7 +107,6 @@ export default function Add() {
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center min-h-screen gap-4 p-4">
-      {/* Forma */}
       <Card className="w-full max-w-md flex-shrink-0">
         <CardHeader>
           <CardTitle>{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</CardTitle>
@@ -126,16 +117,14 @@ export default function Add() {
               <Label htmlFor="title" className="mb-2">
                 Sarlavha
               </Label>
-              <Input id="title" name="title" value={form.title} onChange={handleChange} />
+              <Input id="title" name="title" value={form.title} onChange={handleChange} ref={titleInputRef} />
             </div>
-
             <div>
               <Label htmlFor="description" className="mb-2">
                 Tavsif
               </Label>
               <Textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} />
             </div>
-
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">
                 <Label htmlFor="category" className="mb-2">
@@ -159,7 +148,6 @@ export default function Add() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="flex-1">
                 <Label htmlFor="price" className="mb-2">
                   Narxi
@@ -167,29 +155,24 @@ export default function Add() {
                 <Input id="price" name="price" value={form.price} onChange={handleChange} placeholder="misol: 380.000" />
               </div>
             </div>
-
             <div>
               <Label htmlFor="phone" className="mb-2">
                 Telefon raqam
               </Label>
               <Input id="phone" name="phone" value={form.phone} onChange={handleChange} placeholder="misol: 901234567" />
             </div>
-
             <div>
               <Label htmlFor="telegram" className="mb-2">
                 Telegram username
               </Label>
               <Input id="telegram" name="telegram" value={form.telegram} onChange={handleChange} placeholder="misol: @real-savdo" />
             </div>
-
             <Button type="submit" disabled={loadingSubmit} className="w-full mt-4">
               {loadingSubmit ? "Yuklanmoqda..." : editAd ? "O'zgartirishni saqlash" : "E'lonni joylashtirish"}
             </Button>
           </form>
         </CardContent>
       </Card>
-
-      {/* E’lonlar */}
       {ads.length > 0 && <MyEditAd ads={ads} fillForm={fillForm} />}
     </div>
   );

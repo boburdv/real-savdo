@@ -36,12 +36,12 @@ export default function AuthPage() {
 
     if (!validateAuth({ email, password, response, mode })) return;
 
-    toast.success(mode === "login" ? "Hisobingizga muvaffaqiyatli kirdingiz" : "Ro'yxatdan muvaffaqiyatli o'tdingiz");
+    toast.success(mode === "login" ? "Hisobga kirish muvaffaqiyatli" : "Ro'yxatdan o'tish muvaffaqiyatli");
     router.push("/");
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen px-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>{mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}</CardTitle>
