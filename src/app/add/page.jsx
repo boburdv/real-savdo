@@ -15,7 +15,6 @@ import { Label } from "@/components/ui/label";
 export default function Add() {
   const [user, setUser] = useState(null);
   const [ads, setAds] = useState([]);
-  const [loadingAds, setLoadingAds] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -34,7 +33,6 @@ export default function Add() {
       } = await supabase.auth.getUser();
       setUser(user);
       if (user) fetchAds(user.id);
-      setLoadingAds(false);
     })();
   }, []);
 
@@ -114,8 +112,6 @@ export default function Add() {
 
     setLoadingSubmit(false);
   };
-
-  if (loadingAds) return <p>Yuklanmoqda...</p>;
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center min-h-screen gap-4 p-4">

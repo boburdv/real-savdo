@@ -44,7 +44,7 @@ export default function Header() {
               <span className="border-r h-4 bg-gray-900"></span>
             </>
           ) : (
-            <Button size="sm" onClick={() => router.push("/auth")}>
+            <Button size="sm" onClick={() => router.push("/auth")} className="gap-0.5">
               Kirish
               <LogIn />
             </Button>

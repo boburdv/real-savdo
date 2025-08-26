@@ -9,31 +9,31 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { validateAuth } from "@/components/Validation";
 import toast from "react-hot-toast";
+import { Loader2Icon } from "lucide-react";
 
 export default function AuthPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState("login");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     let response;
     if (mode === "login") {
       response = await supabase.auth.signInWithPassword({ email, password });
     } else {
       response = await supabase.auth.signUp({ email, password });
-
       if (response.data?.user) {
-        await supabase.from("users").insert([
-          {
-            id: response.data.user.id,
-            email: response.data.user.email,
-          },
-        ]);
+        await supabase.from("users").insert([{ id: response.data.user.id, email: response.data.user.email }]);
       }
     }
+
+    setLoading(false);
+
     if (!validateAuth({ email, password, response, mode })) return;
 
     toast.success(mode === "login" ? "Hisobingizga muvaffaqiyatli kirdingiz" : "Ro'yxatdan muvaffaqiyatli o'tdingiz");
@@ -63,7 +63,8 @@ export default function AuthPage() {
               <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <CardFooter className="flex-col gap-2 p-0">
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2Icon className="animate-spin mr-2 h-4 w-4" />}
                 {mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}
               </Button>
               <Button variant="outline" className="w-full">
