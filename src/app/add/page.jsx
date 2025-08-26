@@ -75,7 +75,7 @@ export default function Add() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) return toast.error("Iltimos, avval tizimga kiringa");
+    if (!user) return toast.error("Iltimos, avval tizimga kiring");
     if (!validateForm(form)) return;
 
     setLoadingSubmit(true);
@@ -131,7 +131,7 @@ export default function Add() {
 
             <div>
               <Label htmlFor="description" className="mb-2">
-                Tavsif (Batafsil)
+                Tavsif
               </Label>
               <Textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} />
             </div>
@@ -190,11 +190,7 @@ export default function Add() {
       </Card>
 
       {/* E’lonlar */}
-      {ads.length > 0 && (
-        <div className="w-full md:w-auto mt-4 md:mt-0 md:max-h-[524px] md:overflow-y-auto rounded-xl">
-          <MyEditAd ads={ads} fillForm={fillForm} />
-        </div>
-      )}
+      {ads.length > 0 && <MyEditAd ads={ads} fillForm={fillForm} />}
     </div>
   );
 }

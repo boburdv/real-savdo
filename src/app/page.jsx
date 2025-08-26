@@ -3,7 +3,7 @@
 import Categories from "@/components/Categories";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Statistic from "@/components/Statistic";
+import Statistic from "@/components/Statistics";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
