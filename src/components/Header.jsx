@@ -26,8 +26,8 @@ export default function Header() {
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/50 dark:bg-[rgba(10,10,10,0.5)] p-2.5 border-b border-dashed backdrop-blur-lg">
-      <div className="flex items-center justify-between max-w-6xl px-2.5 mx-auto">
+    <header className="sticky top-0 z-50 bg-white/50 dark:bg-[rgba(10,10,10,0.5)] py-2.5 border-b border-dashed backdrop-blur-lg">
+      <div className="flex items-center justify-between max-w-6xl px-4 mx-auto">
         <div>
           <Navbar />
         </div>

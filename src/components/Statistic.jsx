@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 export default function Statistic() {
   const [stats, setStats] = useState({ users: 0, listings: 0 });
@@ -22,17 +22,21 @@ export default function Statistic() {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-2.5">
+    <div className="max-w-6xl mx-auto px-4">
       <h2 className="text-2xl mb-6 font-semibold">Statistika</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
         <Card className="shadow-none">
-          <CardTitle>Foydalanuvchilar</CardTitle>
-          <h3 className="text-3xl font-semibold opacity-60">+{stats.users}</h3>
+          <CardContent>
+            <CardTitle>Foydalanuvchilar</CardTitle>
+            <h3 className="text-3xl font-semibold opacity-70 mt-4">+{stats.users}</h3>
+          </CardContent>
         </Card>
 
         <Card className="shadow-none">
-          <CardTitle>E'lonlar</CardTitle>
-          <h3 className="text-3xl font-semibold opacity-60">+{stats.listings}</h3>
+          <CardContent>
+            <CardTitle>E'lonlar</CardTitle>
+            <h3 className="text-3xl font-semibold opacity-70 mt-4">+{stats.listings}</h3>
+          </CardContent>
         </Card>
       </div>
     </div>

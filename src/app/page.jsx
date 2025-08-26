@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <Header />
-      <div className="flex items-center justify-between max-w-6xl mx-auto my-16 p-2.5">
+      <div className="flex items-center justify-between max-w-6xl mx-auto my-16 px-4">
         <div>
           <h1 className="text-[46px] font-semibold w-[520px] leading-12">Xavfsiz, onlayn akkaunt savdo platformasi</h1>
           <p className="w-md text-lg mt-6 opacity-70">
