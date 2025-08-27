@@ -4,9 +4,9 @@ import { Button } from "./ui/button";
 
 export default function Nav() {
   const menu = [
+    { name: "Kategoriya", href: "/" },
     { name: "Balans", href: "/balance" },
     { name: "E'lon joylash", href: "/add" },
-    { name: "Kategoriya", href: "/" },
     { name: "Yordam", href: "/support" },
     { name: "Haqida", href: "/about" },
   ];

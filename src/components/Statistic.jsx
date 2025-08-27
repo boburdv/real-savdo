@@ -23,16 +23,16 @@ export default function Statistic() {
 
   return (
     <div className="max-w-6xl mx-auto px-4">
-      <h2 className="text-2xl mb-6 font-semibold">Statistika</h2>
+      <h2 className="text-2xl mb-6 font-medium">Statistika</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
-        <Card className="shadow-none">
+        <Card>
           <CardContent>
             <CardTitle>Foydalanuvchilar</CardTitle>
             <h3 className="text-3xl font-semibold opacity-70 mt-4">+{stats.users}</h3>
           </CardContent>
         </Card>
 
-        <Card className="shadow-none">
+        <Card>
           <CardContent>
             <CardTitle>E'lonlar</CardTitle>
             <h3 className="text-3xl font-semibold opacity-70 mt-4">+{stats.listings}</h3>

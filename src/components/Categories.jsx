@@ -8,7 +8,7 @@ export default function Categories() {
       href: "/instagram",
       img: "/instagram.png",
       imgDark: "/instagram-dark.png",
-      desc: "Foydalanuvchi akkauntlari",
+      desc: "Akkauntlar",
     },
     {
       name: "YouTube",
@@ -43,20 +43,20 @@ export default function Categories() {
       href: "/obmen",
       img: "/obmen.png",
       imgDark: "/obmen-dark.png",
-      desc: "Hisob almashinuvi",
+      desc: "Hisob almashinuv",
     },
   ];
 
   return (
     <div className="max-w-6xl mx-auto px-4 my-16">
-      <h2 className="text-2xl mb-6 font-semibold">Kategoriya</h2>
+      <h2 className="text-2xl mb-6 font-medium">Kategoriya</h2>
       <div className="grid grid-cols-3 gap-4">
         {items.map((item) => (
           <Link key={item.name} href={item.href}>
-            <Card className="p-4">
+            <Card className="p-4  hover:shadow-md transition hover:-translate-y-1 cursor-pointer rounded-xl">
               <CardContent className="flex items-center gap-4">
-                <img src={item.img} alt={item.name} className="dark:hidden w-24" />
-                <img src={item.imgDark} alt={item.name} className="hidden dark:inline w-24" />
+                <img src={item.img} alt={item.name} className="dark:hidden w-20" />
+                <img src={item.imgDark} alt={item.name} className="hidden dark:inline w-20" />
                 <div className="flex-col ">
                   <h3 className="text-2xl font-medium">{item.name}</h3>
                   <p className="opacity-70">{item.desc}</p>
