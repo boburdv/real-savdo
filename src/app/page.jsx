@@ -10,28 +10,30 @@ export default function Page() {
       <Header />
       <div className="max-w-6xl mx-auto px-4 my-16">
         <Card>
-          <CardContent className="flex items-center justify-between">
-            <div>
-              <h1 className="text-[46px] font-semibold w-[520px] leading-12">Xavfsiz, onlayn akkaunt savdo platformasi</h1>
-              <p className="w-md text-lg mt-6 opacity-70">
+          <CardContent className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <h1 className="text-3xl md:text-[46px] font-semibold leading-snug md:leading-[3.2rem] max-w-xl">Xavfsiz, onlayn akkaunt savdo platformasi</h1>
+              <p className="text-base md:text-lg mt-4 md:mt-6 opacity-70 max-w-md mx-auto md:mx-0">
                 Bu yerda turli ijtimoiy tarmoqlar akkauntlarini sotib olishingiz, e’loningizni bepul joylashtirib, boshqa foydalanuvchilar bilan xavfsiz savdo qilishingiz
                 mumkin. Batafsilni videoda tomosha qiling.
               </p>
             </div>
 
-            <iframe
-              width="540"
-              height="303"
-              src="https://www.youtube.com/embed/AjWfY7SnMBI"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
+            <div className="w-full md:w-auto">
+              <iframe
+                className="w-full md:w-[540px] md:h-[303px] rounded-xl"
+                src="https://www.youtube.com/embed/AjWfY7SnMBI"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
+
       <Statistic />
       <Categories />
       <Footer />
