@@ -17,7 +17,7 @@ export default function Categories() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item) => (
           <Link key={item.name} href={item.href}>
-            <Card className="p-4 hover:shadow-md transition hover:-translate-y-1 cursor-pointer rounded-xl">
+            <Card className="p-4 hover:shadow-sm shadow-none transition hover:-translate-y-0.5 cursor-pointer rounded-xl">
               <CardContent className="flex items-center gap-4">
                 <img src={item.img} alt={item.name} className="dark:hidden w-20" />
                 <img src={item.imgDark} alt={item.name} className="hidden dark:inline w-20" />

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import MyAccount from "./MyAccount";
 import Navbar from "./Navbar";
 import { ModeToggle } from "./ModeToggle";
-import { Notebook } from "lucide-react";
+import { LogIn, Notebook } from "lucide-react";
 
 export default function Header() {
   const router = useRouter();
@@ -43,6 +43,7 @@ export default function Header() {
           ) : (
             <Button size="sm" onClick={() => router.push("/auth")}>
               Kirish
+              <LogIn />
             </Button>
           )}
           <span className="border-r h-4 bg-gray-900"></span>
