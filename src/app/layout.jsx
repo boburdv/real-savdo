@@ -1,6 +1,7 @@
 import { GeistSans, GeistMono } from "geist/font";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Real savo",
@@ -10,9 +11,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="font-sans antialiased bg-gray-50 dark:bg-neutral-950">
+      <body className="font-sans antialiased bg-gray-50/80 dark:bg-neutral-950">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

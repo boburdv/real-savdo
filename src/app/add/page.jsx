@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import MyEditAd from "@/components/EditAd";
 import { validateForm } from "@/components/Validation";
 import toast from "react-hot-toast";
+import { Label } from "@/components/ui/label";
 
 export default function Add() {
   const [user, setUser] = useState(null);
@@ -21,6 +23,7 @@ export default function Add() {
     price: "",
     category: "",
     phone: "",
+    telegram: "",
   });
   const [editAd, setEditAd] = useState(null);
 
@@ -38,7 +41,6 @@ export default function Add() {
   const fetchAds = async (uid = user?.id) => {
     if (!uid) return;
     const { data, error } = await supabase.from("listings").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-
     if (!error) setAds(data || []);
   };
 
@@ -49,6 +51,7 @@ export default function Add() {
       price: ad.price,
       category: ad.category,
       phone: ad.phone,
+      telegram: ad.telegram || "",
     });
     setEditAd(ad);
     toast.success("E'lonni tahrirlash mumkin");
@@ -74,7 +77,7 @@ export default function Add() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) return toast.error("Iltimos avval tizimga kiring");
+    if (!user) return toast.error("Iltimos, avval tizimga kiringa");
     if (!validateForm(form)) return;
 
     setLoadingSubmit(true);
@@ -103,6 +106,7 @@ export default function Add() {
         price: "",
         category: "",
         phone: "",
+        telegram: "",
       });
       setEditAd(null);
       fetchAds();
@@ -114,36 +118,87 @@ export default function Add() {
   if (loadingAds) return <p>Yuklanmoqda...</p>;
 
   return (
-    <div>
-      <section>
-        <h1>{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</h1>
-        <form onSubmit={handleSubmit}>
-          <Input name="title" value={form.title} onChange={handleChange} placeholder="Sarlavha" />
-          <Textarea name="description" value={form.description} onChange={handleChange} placeholder="Tavsif" rows={4} />
-          <Input name="price" value={form.price} onChange={handleChange} placeholder="Narx" />
-          <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Kategoriya tanlang" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="instagram">Instagram</SelectItem>
-                <SelectItem value="youtube">YouTube</SelectItem>
-                <SelectItem value="pubg">PUBG</SelectItem>
-                <SelectItem value="tiktok">TikTok</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Input name="phone" value={form.phone} onChange={handleChange} placeholder="Telefon raqam" />
-          <Button type="submit" disabled={loadingSubmit}>
-            {loadingSubmit ? "Yuklanmoqda..." : editAd ? "O'zgartirishni saqlash" : "E'lonni joylash"}
-          </Button>
-        </form>
-      </section>
+    <div className="flex flex-col md:flex-row justify-center items-center min-h-screen gap-4 p-4">
+      {/* Forma */}
+      <Card className="w-full max-w-md flex-shrink-0">
+        <CardHeader>
+          <CardTitle>{editAd ? "E'lonni tahrirlash" : "Yangi e'lon qo'shish"}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div>
+              <Label htmlFor="title" className="mb-2">
+                Sarlavha
+              </Label>
+              <Input id="title" name="title" value={form.title} onChange={handleChange} />
+            </div>
 
-      <section>
-        <MyEditAd ads={ads} fillForm={fillForm} />
-      </section>
+            <div>
+              <Label htmlFor="description" className="mb-2">
+                Tavsif (Batafsil)
+              </Label>
+              <Textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} />
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1">
+                <Label htmlFor="category" className="mb-2">
+                  Kategoriya
+                </Label>
+                <Select id="category" value={form.category || ""} onValueChange={(v) => setForm({ ...form, category: v })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Tanlash uchun bosing" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="instagram">Instagram</SelectItem>
+                      <SelectItem value="youtube">YouTube</SelectItem>
+                      <SelectItem value="tiktok">TikTok</SelectItem>
+                      <SelectItem value="pubg">PUBG</SelectItem>
+                      <SelectItem value="brawlstars">BrawlStars</SelectItem>
+                      <SelectItem value="obmen" disabled>
+                        Ayirboshlash
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex-1">
+                <Label htmlFor="price" className="mb-2">
+                  Narxi
+                </Label>
+                <Input id="price" name="price" value={form.price} onChange={handleChange} placeholder="misol: 380.000" />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="phone" className="mb-2">
+                Telefon raqam
+              </Label>
+              <Input id="phone" name="phone" value={form.phone} onChange={handleChange} placeholder="misol: 901234567" />
+            </div>
+
+            <div>
+              <Label htmlFor="telegram" className="mb-2">
+                Telegram username
+              </Label>
+              <Input id="telegram" name="telegram" value={form.telegram} onChange={handleChange} placeholder="misol: @real-savdo" />
+            </div>
+
+            <Button type="submit" disabled={loadingSubmit} className="w-full mt-4">
+              {loadingSubmit ? "Yuklanmoqda..." : editAd ? "O'zgartirishni saqlash" : "E'lonni joylashtirish"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* E’lonlar */}
+      {ads.length > 0 && (
+        <div className="w-full md:w-auto mt-4 md:mt-0 md:max-h-[524px] md:overflow-y-auto rounded-xl">
+          <MyEditAd ads={ads} fillForm={fillForm} />
+        </div>
+      )}
     </div>
   );
 }

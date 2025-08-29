@@ -36,7 +36,7 @@ export default function AuthPage() {
     }
     if (!validateAuth({ email, password, response, mode })) return;
 
-    toast.success(mode === "login" ? "Hisobga kirish muvaffaqiyatli!" : "Ro'yxatdan o'tish muvaffaqiyatli!");
+    toast.success(mode === "login" ? "Hisobingizga muvaffaqiyatli kirdingiz" : "Ro'yxatdan muvaffaqiyatli o'tdingiz");
     router.push("/");
   };
 

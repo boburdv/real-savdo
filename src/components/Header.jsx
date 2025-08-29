@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import MyAccount from "./MyAccount";
 import Navbar from "./Navbar";
 import { ModeToggle } from "./ModeToggle";
-import { LogIn, Notebook } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 export default function Header() {
   const router = useRouter();
@@ -39,14 +39,16 @@ export default function Header() {
             </Button>
           )}
           {user ? (
-            <MyAccount user={user} />
+            <>
+              <MyAccount user={user} />
+              <span className="border-r h-4 bg-gray-900"></span>
+            </>
           ) : (
             <Button size="sm" onClick={() => router.push("/auth")}>
               Kirish
               <LogIn />
             </Button>
           )}
-          <span className="border-r h-4 bg-gray-900"></span>
           <ModeToggle />
         </div>
       </div>

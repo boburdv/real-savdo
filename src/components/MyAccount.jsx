@@ -15,7 +15,7 @@ export default function UserDropdown({ user }) {
     if (error) {
       toast.error("Chiqishda xatolik yuz berdi");
     } else {
-      toast.success("Hisobdan chiqdingiz");
+      toast.success("Hisobingizdan chiqdingiz");
     }
   };
 

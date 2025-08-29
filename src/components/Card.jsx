@@ -36,7 +36,7 @@ export default function CategorySection({ category }) {
 
   return (
     <div>
-      <h1>{category} e’lonlari</h1>
+      <h1>{category} e'lonlari</h1>
 
       {listings.map((ad) => (
         <Card key={ad.id}>
