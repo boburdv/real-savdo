@@ -117,13 +117,20 @@ export default function Add() {
               <Label htmlFor="title" className="mb-2">
                 Sarlavha
               </Label>
-              <Input id="title" name="title" value={form.title} onChange={handleChange} ref={titleInputRef} />
+              <Input id="title" name="title" value={form.title} onChange={handleChange} ref={titleInputRef} placeholder="misol: Instagram 10k obunachi " />
             </div>
             <div>
               <Label htmlFor="description" className="mb-2">
                 Tavsif
               </Label>
-              <Textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} />
+              <Textarea
+                id="description"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                rows={4}
+                placeholder="misol: Story soni, (охват) soni vahokazo..."
+              />
             </div>
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">

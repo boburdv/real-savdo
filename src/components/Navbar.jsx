@@ -26,7 +26,7 @@ export default function Nav() {
       </a>
       <div className="hidden md:flex gap-2">
         {menu.map(({ name, href }) => (
-          <Button key={name} variant="link" className="text-[15px]" asChild>
+          <Button key={name} variant="ghost" size="sm" className="text-[15px]" asChild>
             <a href={href}>{name}</a>
           </Button>
         ))}
@@ -35,7 +35,7 @@ export default function Nav() {
         <button onClick={() => setOpen(!open)}>{open ? <X size={24} /> : <Menu size={24} />}</button>
       </div>
       {open && (
-        <div className="absolute top-13 left-0 w-full bg-white dark:bg-black backdrop-blur-2xl shadow-md flex flex-col items-start p-5 gap-7 md:hidden">
+        <div className="absolute top-13 left-0 w-full bg-white dark:bg-[#171717] shadow-md flex flex-col items-start p-5 gap-7 md:hidden">
           <a href="/">
             <img src={logoSrc} alt="logo" className="w-8 h-7" />
           </a>
