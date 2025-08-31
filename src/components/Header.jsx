@@ -26,7 +26,7 @@ export default function Header() {
   if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/50 dark:bg-[#17171780] py-2.5 border-b border-dashed backdrop-blur-lg">
+    <header className="sticky top-0 z-50 bg-white/50 dark:bg-[#17171780] py-3 border-b border-dashed backdrop-blur-lg">
       <div className="flex items-center justify-between max-w-6xl px-4 mx-auto">
         <div>
           <Navbar />
@@ -34,7 +34,7 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
           {user && (
-            <Button variant="destructive" size="sm">
+            <Button variant="destructive" size="sm" onClick={() => router.push("/deal")}>
               Bitimlar
             </Button>
           )}
@@ -44,7 +44,7 @@ export default function Header() {
               <span className="border-r h-4 bg-gray-900"></span>
             </>
           ) : (
-            <Button size="sm" onClick={() => router.push("/auth")} className="gap-0.5" variant="secondary">
+            <Button size="sm" onClick={() => router.push("/auth")} className="gap-0.5">
               Kirish
               <LogIn />
             </Button>

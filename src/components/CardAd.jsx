@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -11,6 +12,7 @@ export default function CategorySection({ category }) {
   const [listings, setListings] = useState([]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -24,8 +26,31 @@ export default function CategorySection({ category }) {
     setOpen(true);
   };
 
-  const handleTransaction = () => {
-    setOpen(false);
+  const handleTransaction = async (ad) => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      console.error("User olinmadi:", userError);
+      return;
+    }
+
+    const buyerId = userData.user.id;
+
+    const { data, error } = await supabase
+      .from("deals")
+      .insert({
+        listing_id: ad.id,
+        buyer_id: buyerId,
+        status: "pending",
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Deal yaratishda xato:", error);
+      return;
+    }
+
+    window.location.href = `/deal?id=${ad.id}&deal=${data.id}`;
   };
 
   const defaultImages = {
@@ -42,7 +67,7 @@ export default function CategorySection({ category }) {
       <Header />
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 max-w-6xl mx-auto sm:p-4 p-2">
         {listings.map((ad) => (
-          <Card key={ad.id} className="w-full">
+          <Card key={ad.id} onClick={() => openModal(ad)} className="w-full hover:shadow-sm shadow-none transition hover:-translate-y-0.5 cursor-pointer">
             <CardContent className="px-3.5">
               <img src={defaultImages[ad.category] || "/default-card/default.png"} alt={ad.title} className="w-full object-cover rounded-t-xl" />
             </CardContent>
@@ -59,28 +84,36 @@ export default function CategorySection({ category }) {
           <DialogHeader>
             <DialogTitle>{selected?.title}</DialogTitle>
           </DialogHeader>
-          <div>
-            <h3>Tavsif:</h3>
-            <p>{selected?.description}</p>
-            <h3>Narxi:</h3>
-            <p>{selected?.price} so’m</p>
-            <h3>Telefon raqam:</h3>
-            <p>{selected?.phone}</p>
-            <h3>Telegram username:</h3>
-            <p>{selected?.telegram}</p>
-            <h3>Kategoriya:</h3>
-            <p>{selected?.category}</p>
-            {selected?.image_url && (
-              <>
-                <h3>Rasm:</h3>
-                <img src={selected.image_url} alt={selected.title} />
-              </>
-            )}
-            <h3>Qo‘shilgan vaqti:</h3>
-            <p>{new Date(selected?.created_at).toLocaleString()}</p>
+
+          <div className="space-y-4">
+            <div className="grid gap-1">
+              <span className="font-semibold text-sm text-muted-foreground">📌 Tavsif:</span>
+              <p className="text-base">{selected?.description}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <span className="font-semibold text-sm text-muted-foreground">💰 Narxi:</span>
+              <p className="text-primary">{selected?.price}.000 so’m</p>
+            </div>
+
+            <div className="grid gap-1">
+              <span className="font-semibold text-sm text-muted-foreground">💬 Telegram:</span>
+              <p>{selected?.telegram}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <span className="font-semibold text-sm text-muted-foreground">📂 Kategoriya:</span>
+              <p>{selected?.category}</p>
+            </div>
+
+            <div className="grid gap-1">
+              <span className="font-semibold text-sm text-muted-foreground">⏰ Qo‘shilgan:</span>
+              <p>{new Date(selected?.created_at).toLocaleString()}</p>
+            </div>
           </div>
-          <DialogFooter>
-            <Button onClick={handleTransaction}>Bitim boshlash</Button>
+
+          <DialogFooter className="pt-4">
+            <Button onClick={() => handleTransaction(selected)}>Bitim boshlash</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

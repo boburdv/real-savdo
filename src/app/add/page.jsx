@@ -77,12 +77,15 @@ export default function Add() {
     if (!validateForm(form)) return;
     setLoadingSubmit(true);
 
-    const payload = { ...form, user_id: user.id };
+    // Yangi listingda seller_id avtomatik qo‘shiladi
+    const payload = { ...form, seller_id: user.id, user_id: user.id };
 
     let error;
     if (editAd) {
-      ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
+      // Tahrirlashda ham user.id tekshiriladi
+      ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("seller_id", user.id));
     } else {
+      // Yangi listing qo‘shish
       ({ error } = await supabase.from("listings").insert([payload]));
     }
 
