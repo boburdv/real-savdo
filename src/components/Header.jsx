@@ -14,13 +14,20 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+  useEffect(function () {
     setMounted(true);
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    const { data: authListener } = supabase.auth.onAuthStateChange((_e, session) => {
+
+    supabase.auth.getUser().then(function ({ data }) {
+      setUser(data.user);
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(function (_e, session) {
       setUser(session?.user || null);
     });
-    return () => authListener.subscription.unsubscribe();
+
+    return function () {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   if (!mounted) return null;
@@ -28,9 +35,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/50 dark:bg-[#17171780] py-3 border-b border-dashed backdrop-blur-lg">
       <div className="flex items-center justify-between max-w-6xl px-4 mx-auto">
-        <div>
-          <Navbar />
-        </div>
+        <Navbar />
 
         <div className="flex items-center gap-2">
           {user && (
@@ -38,6 +43,7 @@ export default function Header() {
               Bitimlar
             </Button>
           )}
+
           {user ? (
             <>
               <MyAccount user={user} />
@@ -49,6 +55,7 @@ export default function Header() {
               <LogIn />
             </Button>
           )}
+
           <ModeToggle />
         </div>
       </div>

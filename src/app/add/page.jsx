@@ -16,97 +16,69 @@ export default function Add() {
   const [user, setUser] = useState(null);
   const [ads, setAds] = useState([]);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const titleInputRef = useRef(null);
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    price: "",
-    category: "",
-    phone: "",
-    telegram: "",
-  });
+  const titleRef = useRef(null);
+  const [form, setForm] = useState({ title: "", description: "", price: "", category: "", phone: "", telegram: "" });
   const [editAd, setEditAd] = useState(null);
 
-  useEffect(() => {
-    (async () => {
+  useEffect(function () {
+    async function loadUser() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       setUser(user);
       if (user) fetchAds(user.id);
-    })();
+    }
+    loadUser();
   }, []);
 
-  const fetchAds = async (uid = user?.id) => {
+  function fetchAds(uid) {
     if (!uid) return;
-    const { data, error } = await supabase.from("listings").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-    if (!error) setAds(data || []);
-  };
+    supabase
+      .from("listings")
+      .select("*")
+      .eq("user_id", uid)
+      .order("created_at", { ascending: false })
+      .then(function (res) {
+        if (!res.error) setAds(res.data || []);
+      });
+  }
 
-  const fillForm = (ad) => {
-    setForm({
-      title: ad.title,
-      description: ad.description,
-      price: ad.price,
-      category: ad.category,
-      phone: ad.phone,
-      telegram: ad.telegram || "",
-    });
+  function fillForm(ad) {
+    setForm({ title: ad.title, description: ad.description, price: ad.price, category: ad.category, phone: ad.phone, telegram: ad.telegram || "" });
     setEditAd(ad);
-    if (titleInputRef.current) titleInputRef.current.focus();
-  };
+    if (titleRef.current) titleRef.current.focus();
+  }
 
-  const handleChange = (e) => {
-    let { name, value } = e.target;
-    if (name === "phone") {
-      value = value.replace(/\D/g, "");
-      if (!value.startsWith("998")) value = "998" + value;
-      if (value.length === 12) {
-        const match = value.match(/^(\d{3})(\d{2})(\d{3})(\d{2})$/);
-        if (match) value = `+${match[1]} ${match[2]} ${match[3]}-${match[4]}`;
-      } else {
-        value = "+" + value;
-      }
-    }
-    setForm({ ...form, [name]: value });
-  };
+  function handleChange(e) {
+    var name = e.target.name;
+    var value = e.target.value.replace(/\D/g, "");
+    if (name === "phone" && !value.startsWith("998")) value = "998" + value;
+    setForm(Object.assign({}, form, { [name]: value }));
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!user) return toast.error("Iltimos, avval tizimga kiring");
     if (!validateForm(form)) return;
     setLoadingSubmit(true);
 
-    // Yangi listingda seller_id avtomatik qo‘shiladi
-    const payload = { ...form, seller_id: user.id, user_id: user.id };
-
-    let error;
+    var payload = Object.assign({}, form, { user_id: user.id });
+    var error;
     if (editAd) {
-      // Tahrirlashda ham user.id tekshiriladi
-      ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("seller_id", user.id));
+      ({ error } = await supabase.from("listings").update(payload).eq("id", editAd.id).eq("user_id", user.id));
     } else {
-      // Yangi listing qo‘shish
       ({ error } = await supabase.from("listings").insert([payload]));
     }
 
-    if (error) {
-      toast.error("Xato: " + error.message);
-    } else {
+    if (error) toast.error("Xato: " + error.message);
+    else {
       toast.success(editAd ? "E'lon muvaffaqiyatli yangilandi!" : "E'lon muvaffaqiyatli joylandi!");
-      setForm({
-        title: "",
-        description: "",
-        price: "",
-        category: "",
-        phone: "",
-        telegram: "",
-      });
+      setForm({ title: "", description: "", price: "", category: "", phone: "", telegram: "" });
       setEditAd(null);
-      fetchAds();
+      fetchAds(user.id);
     }
-
     setLoadingSubmit(false);
-  };
+  }
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center min-h-screen gap-4 p-4">
@@ -120,27 +92,26 @@ export default function Add() {
               <Label htmlFor="title" className="mb-2">
                 Sarlavha
               </Label>
-              <Input id="title" name="title" value={form.title} onChange={handleChange} ref={titleInputRef} placeholder="misol: Instagram 10k obunachi " />
+              <Input id="title" name="title" value={form.title} onChange={handleChange} ref={titleRef} placeholder="misol: Instagram 10k obunachi " />
             </div>
             <div>
               <Label htmlFor="description" className="mb-2">
                 Tavsif
               </Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows={4}
-                placeholder="misol: Story soni, (охват) soni vahokazo..."
-              />
+              <Textarea id="description" name="description" value={form.description} onChange={handleChange} rows={4} placeholder="misol: Story soni, (охват) soni..." />
             </div>
             <div className="flex flex-col md:flex-row gap-3">
               <div className="flex-1">
                 <Label htmlFor="category" className="mb-2">
                   Kategoriya
                 </Label>
-                <Select id="category" value={form.category || ""} onValueChange={(v) => setForm({ ...form, category: v })}>
+                <Select
+                  id="category"
+                  value={form.category || ""}
+                  onValueChange={function (v) {
+                    setForm(Object.assign({}, form, { category: v }));
+                  }}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Tanlash uchun bosing" />
                   </SelectTrigger>

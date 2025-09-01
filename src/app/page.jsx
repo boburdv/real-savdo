@@ -23,15 +23,25 @@ export default function Page() {
                 Ro'yxatdan o'tish, turli ijtimoiy tarmoqlar akkauntlarini sotib olish, e’lon berish va xavfsiz savdo qilish. Batafsil videoda
               </p>
               <div className="flex justify-center md:justify-start items-center gap-4">
-                <Button onClick={() => router.push("add")} size="sm">
+                <Button
+                  onClick={function () {
+                    router.push("add");
+                  }}
+                  size="sm"
+                >
                   E'lon joylash
                 </Button>
-                <Button onClick={() => router.push("auth")} size="sm" variant="secondary">
+                <Button
+                  onClick={function () {
+                    router.push("auth");
+                  }}
+                  size="sm"
+                  variant="secondary"
+                >
                   E'lonlar
                 </Button>
               </div>
             </div>
-
             <div className="w-full md:w-auto flex justify-center">
               <iframe
                 className="sm:w-[420px] md:w-[540px] h-[200px] sm:h-[240px] md:h-[303px] rounded-md"
@@ -46,7 +56,6 @@ export default function Page() {
           </CardContent>
         </Card>
       </div>
-
       <Statistic />
       <Categories />
       <Footer />

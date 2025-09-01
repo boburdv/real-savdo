@@ -67,7 +67,6 @@ export const validateForm = (form) => {
     return false;
   }
 
-  // form.telegram mavjudligini tekshirish
   if (!form.telegram || !/^@[a-zA-Z]+$/.test(form.telegram)) {
     toast.error("To'g'ri username kiritish muhim!");
     document.getElementById("telegram")?.focus();

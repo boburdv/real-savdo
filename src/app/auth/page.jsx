@@ -18,11 +18,11 @@ export default function AuthPage() {
   const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
-    let response;
+    var response;
     if (mode === "login") {
       response = await supabase.auth.signInWithPassword({ email, password });
     } else {
@@ -38,7 +38,7 @@ export default function AuthPage() {
 
     toast.success(mode === "login" ? "Hisobga kirish muvaffaqiyatli" : "Ro'yxatdan o'tish muvaffaqiyatli");
     router.push("/");
-  };
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen px-4">
@@ -47,7 +47,12 @@ export default function AuthPage() {
           <CardTitle>{mode === "login" ? "Hisobga kirish" : "Ro'yxatdan o'tish"}</CardTitle>
           <CardDescription>{mode === "login" ? "Hisobga kirish uchun ma'lumotlarni to'ldiring" : "Ro'yxatdan o'tish uchun ma'lumotlarni to'ldiring"}</CardDescription>
           <CardAction>
-            <Button variant="link" onClick={() => setMode(mode === "login" ? "register" : "login")}>
+            <Button
+              variant="link"
+              onClick={function () {
+                setMode(mode === "login" ? "register" : "login");
+              }}
+            >
               {mode === "login" ? "Ro'yxatdan o'tish" : "Hisobga kirish"}
             </Button>
           </CardAction>
@@ -56,11 +61,26 @@ export default function AuthPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Elektron pochta</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="test@gmail.com" />
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={function (e) {
+                  setEmail(e.target.value);
+                }}
+                placeholder="test@gmail.com"
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Parol</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={function (e) {
+                  setPassword(e.target.value);
+                }}
+              />
             </div>
             <CardFooter className="flex-col gap-2 p-0">
               <Button type="submit" className="w-full" disabled={loading}>
